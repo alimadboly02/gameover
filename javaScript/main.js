@@ -156,7 +156,7 @@ function display(data) {
       cardBody.appendChild(c);
 
       const cardText = document.createElement("p");
-      cardText.classList.add("card-text", "text-center", "small", "opacity-50");
+      cardText.classList.add("card-text", "text-center", "small", "opacity-50","text-white");
       let t = content.short_description;
       const text = document.createTextNode(t.split("").splice(0, 60).join(""));
       cardText.appendChild(text);
@@ -279,7 +279,7 @@ try {
       <p>Category: <span class="badge text-bg-info"> ${data.genre}</span> </p>
       <p>Platform: <span class="badge text-bg-info"> ${data.platform}</span> </p>
       <p>Status: <span class="badge text-bg-info">${data.status}</span> </p>
-      <p class="small">${data.description}</p>
+      <p class="small text-white">${data.description}</p>
 
       <a class="btn btn-outline-warning" target="_blank" href="${data.freetogame_profile_url}">Show Game</a>
    </div>
