@@ -12,6 +12,9 @@ document.addEventListener("scroll", (e) => {
   }
 });
 async function getGames(value) {
+// start loading
+ loader.classList.add("d-flex");
+loader.classList.remove("d-none");
   let url = `https://free-to-play-games-database.p.rapidapi.com/api/games?category=${value}`;
   const options = {
     method: "GET",
@@ -23,8 +26,12 @@ async function getGames(value) {
   try {
     const response = await fetch(url, options);
     const result = await response.json();
+loader.classList.remove("d-flex");
+loader.classList.add("d-none");
     return await result;
     console.log(result)
+// End loading
+
   } catch (error) {
     console.error(error);
   }
@@ -35,6 +42,7 @@ class Category {
   }
   async print  (p) {
 	const game= await getGames(this.name)
+
 	display(game)
 	
   }
@@ -100,7 +108,9 @@ superhero.addEventListener("click", async (e) => {
   mmorpg.classList.remove("active");
   superhero.classList.add("active");
   shooter.classList.remove("active");
-
+  sailing.classList.remove("active");
+  permadeath.classList.remove("active");
+  pixel.classList.remove("active");
   const y1 = new Category("superhero");
   y1.print()
 });
@@ -207,14 +217,14 @@ function display(data) {
     const cardList=document.querySelectorAll(".card")
     
     
- 
+//  review********************************************************************************
+
   for (let i = 0; i < cardList.length; i++) {
     cardList[i].addEventListener('click',function (e) {
       review.classList.remove("d-none")
       console.log(idList[i]);
       const nour = new game(idList[i]);
       nour.postReview()
-      
     });
     
   }
@@ -242,7 +252,9 @@ class game{
   }
   async postReview(){
     let info= await getReview(this.id)
-    printReview(info)
+    console.log(info);
+    
+     printReview(info)
   }
 }
   async function getReview(id){
@@ -267,9 +279,8 @@ try {
   }
  
   function printReview(data) {
+   
     can.innerHTML=`
-  
-
         <div class="row g-4" id="detailsContent">
       <div class="col-md-4">
       <img src="${data.thumbnail}" class="w-100" alt="image details">
@@ -295,8 +306,23 @@ try {
  })
 
 
- sailing.addEventListener('load',()=>{
-  loader.classList.add("d-none");
-  console.log('hello')
- })
+function showLoader(callback) {
+  loader.classList.add("d-flex");
+  setTimeout(() => {
+    loader.classList.remove("d-flex");
+    callback();
+  }, 1000);
   
+}
+document.querySelectorAll('a.nav-link').forEach((item)=>{
+ item.addEventListener('click',function (e) {
+  e.preventDefault();
+  const target= this.getAttribute('href')
+  showLoader(()=>{
+    document.querySelector(target).scrollIntoView({
+      behavior: 'smooth'
+    })
+  })
+  
+ })
+})
